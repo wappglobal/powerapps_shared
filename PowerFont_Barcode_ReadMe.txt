@@ -1,10 +1,15 @@
 PowerFont_Barcode
 Based on example from Eickhel Mendoza https://www.powernimbus.com/2019/04/using-custom-fonts-in-powerapps/
 
-Replaced original custom font with Bade 64 version of Libre Barcode 128 font, and then concatenated the Label2.Text text for the example number to use in the barcode (at the bottom in the ' class='BarcodeMe'>"&Label2.Text&" ' part)
+Replaced original custom font with Base 64 version of Libre Barcode 128 font and also basic (non extended) version of Free 3 of 9 font, and used different classes to more easily select which to use.
+
+Concatenated the label text for the example text to use in the barcode, at the bottom in the ' class='BarcodeMe'>"&Label_Raw.Text&" ' part.
+IMPORTANT:
+Note the differences for Libre 128 and 3 of 9 for leading and trailing characters and a checksum digit for Libre 128.
+Libre 128 = class='BarcodeMe1'>Ì"&Label_Raw.Text&"zÎ</text> (leading character=Ì, z =checksum digit for value of 90, trailing character=Î )
+3 of 9 = class='BarcodeMe2'>&#42;"&Label_Raw_1.Text&"&#42;</text> (leading character=*, trailing character=*) (html code used here as Ascii characters didn't seem to work).
 
 Inserted Image control and in the Image parameter add:
-
 
 "data:image/svg+xml," & // You need to include this data uri to indicate that the code herein is an SVG image
  EncodeUrl(
@@ -18,11 +23,20 @@ Inserted Image control and in the Image parameter add:
     font-style: normal;
     }
 
-    .BarcodeMe { font: 256px 'Libre Barcode 128' }
+  @font-face {
+    font-family: 'Free3of9';
+    src: url(data:application/font-woff2;charset=utf-8;base64,d09GMgABAAAAAARwAA0AAAAAFaQAAAQbAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP0ZGVE0cGh4GVgCCahEICptolyILYAABNgIkA2YEIAWGAgeBDhsTEsguBuyG+kINxUnhJBemDawvJ02Ih+/XXs9deLshYhuViSppAoUkXCfji8Zlqsq6tu5Plc3FmPvNq5sljx6apXkbEPHMERJHSDQvARpHp17IDiiTEpPR9vcC80IzTrKum8lwDB8ALP/HAextb7O3v9kzgmw8CHdBoXGqzlJKFx5LMvt2rzzoFo8T1SG7MT2enEN54s8jvCGYWdNZBRjtMyuEBX71RwwB/65leADA13enqgmt6AcyIaxDKJAh8k7EQUmy2ybu/PRuBmBSMwlSAQKQY2x0xNx+3sAotGOgXS2TTJJQcWi6z8QkMSWNQLIp9uPDuzfXgthGJGPmIrOF6MYgR1FCqhwT8esIA1jv66ddLv1vEwhFYolUJlcoVWqNFoAcrMUZq9MNc9X8/zt8BdIfAGpACCV+L0V5u6X5bUvGxLSelnF9YRjPbGERmkSjMoGUmU3Eo4AsKka3ioTC6SERKK8jXiQc8cgJRkGMXUq5EGPxvnOxatrQKaBoLqK3sxaICfxUb5tnxPN92ZoBa9fmBJITpwMrrViJ2e51a2UIC5Nml9eY9zsP47S0RmU7H9RbBbFE0NjsoJJwRveaQEFQeXzNy2DSjGdN9Gtz8+hJL1ny+DjSD23WCVAfZiHmJMK1PqhPvmI989aT0v1jg7Q2h/kXlBU52x8g5ndGK5W71l49+5HOtVm98q6iTW1vFUylVmLAudZJAsKdoQ5uHeMfkHkcb5PYeBlwQj4+3k3p3DtOSftDkGvzbuh30qmA/Yy7OCQGOL20K6tghuxa5/l4Z/BOx3oVDdnKia550I9Y1RhQu5A2vLuJ2hb2vV/CrS4zoIzOI+z5hHScdz5GCAPa0P4wbzQg8STsJlVD19YEn2mt8O0uUFdLgJ7zrq2BKwVe+bgrW+sYaGwNyL5aY+nHftq2f1jPdyJNh+fvPc/XOu4P79p9WgnaZY0k1B0gSKvyzhmnQWC4mEi1VkzuDmwgwwz4sdHpdVLbgbHJhha/bKbSsLnJkNpCT4xsqTW+2KSOb9dX5jMKoETRhAegZ0O/e5tp99fmDv1tYT5itjQYC5t0xuPLrJyLF+J4QyQwXIYeTDJwcLDh6xhQxivLOKJBNYT2xc34AjQNFQWMpMLXiISIKuJnBnfu0w+Tf4J14AXGHTWiv3z+xox1ntP//bEEcARDLkImfCMUcoA3BdzWxB9RdABcQjCF9orgm4yDVtP4i37/pYqIEsGxkIGWniGCMb7Aseu1kPMwaPWGoryWfYJMmXqSPUnYPXgk93VGfNnZpLLo9UOYyMfVrNBgsoZ9n97q/WAGs8TPHuS945NsgMgil6vU2rTrREBEQkZBRUPHwMTCJiYhJSOnoKSipqGlo2dgZGJmYWVj5+Dk4uZJw3vD8605vAM=) format('woff2'),
+        url(data:application/font-woff;charset=utf-8;base64,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) format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+    .BarcodeMe1 { font: 256px 'Libre Barcode 128' }
+    .BarcodeMe2 { font: 256px 'Free3of9' }
     .Colored { fill: red }
   </style>
 
-  <text x='10' y='240' class='BarcodeMe'>"&Label2.Text&"</text>
+  <text x='10' y='240' class='BarcodeMe1'>Ì"&Label_Raw.Text&"zÎ</text>
   
 </svg>"
 )
